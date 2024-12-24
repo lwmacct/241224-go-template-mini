@@ -1,0 +1,34 @@
+version: "3"
+
+tasks:
+  build:bin:
+    desc: "构建二进制文件"
+    cmds:
+      - go build -ldflags "{{.GO_BUILD_LDFLAGS_X}}" -o {{.GO_APP_PATH}} .
+
+  test:help:
+    deps:
+      - task: build:bin
+    cmds:
+      - |
+        export ACF_SHOW_TEST=1
+        {{.GO_APP_PATH}} test --help
+
+  test:run:
+    deps:
+      - task: build:bin
+    vars:
+      STDIN: "Stdin"
+    cmds:
+      - |
+        export ACF_SHOW_TEST=1
+        echo '{{.STDIN}}' | {{.GO_APP_PATH}} test run
+
+  start:run:
+    deps:
+      - task: build:bin
+    cmds:
+      - |
+        export ACF_SHOW_TEST=1
+        env | grep ACF_
+        echo "Stdin" | {{.GO_APP_PATH}} start run

@@ -1,0 +1,81 @@
+version: "3"
+dotenv:
+  [".env", "{{.HOME}}/.env", "template/taskfile/.env", ".local/taskfile/.env"]
+
+vars:
+  DEVELOPER: "https://yuque.com/lwmacct"
+  TIME_NOW:
+    sh: TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S %Z'
+  PATH_LOCAL: ".local"
+  PATH_BIN: "{{.PATH_LOCAL}}/bin"
+  PATH_DATA: "{{.PATH_LOCAL}}/data"
+  PATH_ARCHIVE: "{{.PATH_LOCAL}}/archive"
+  PATH_INIT:
+    sh: |
+      mkdir -p {{.PATH_BIN}} {{.PATH_DATA}} {{.PATH_ARCHIVE}}
+  PATH_FULL:
+    sh: pwd
+  GO_MODE_NAME:
+    sh: go mod edit -json | jq -r .Module.Path
+  GO_APP_PROJECT:
+    sh: echo "{{.GO_MODE_NAME}}" | awk -F/ '{print $NF}'
+  GO_APP_NAME:
+    sh: echo "{{.GO_APP_PROJECT}}" | cut -d'-' -f2-
+  GO_APP_PATH: "{{.PATH_BIN}}/{{.GO_APP_NAME}}"
+  GIT_TAG_LATEST:
+    sh: |
+      latest_tag=$(git describe --tags --abbrev=0 2>/dev/null) || true
+      if [[ "${latest_tag}" == "" ]]; then
+          git tag v0.0.0 -m "init" 
+          latest_tag="v0.0.0";
+      fi
+      echo ${latest_tag}
+  GIT_TAG_NEXT:
+    sh: |
+      echo {{.GIT_TAG_LATEST}} | awk -F. '{print $1"."$2"."$3+1}'
+  GIT_COMMIT:
+    sh: git log -n 1 --format=%h 2>/dev/null || echo "0000"
+  GO_BUILD_LDFLAGS_SW: >-
+    -s
+    -w
+  GO_BUILD_LDFLAGS_X: >-
+    -X '{{.GO_MODE_NAME}}/app/version.AppRawName={{.GO_APP_NAME}}'
+    -X '{{.GO_MODE_NAME}}/app/version.AppProject={{.GO_APP_PROJECT}}'
+    -X '{{.GO_MODE_NAME}}/app/version.AppVersion={{.GIT_TAG_NEXT}}'
+    -X '{{.GO_MODE_NAME}}/app/version.GitCommit={{.GIT_COMMIT}}'
+    -X '{{.GO_MODE_NAME}}/app/version.BuildTime={{.TIME_NOW}}'
+    -X '{{.GO_MODE_NAME}}/app/version.Developer={{.DEVELOPER}}'
+    -X '{{.GO_MODE_NAME}}/app/version.Workspace={{.PATH_FULL}}'
+  GO_BUILD_LDFLAGS: "{{.GO_BUILD_LDFLAGS_SW}} {{.GO_BUILD_LDFLAGS_X}}"
+
+includes:
+  build:
+    taskfile: template/taskfile/build.yaml
+    optional: true
+
+  run:
+    taskfile: template/taskfile/run.yaml
+    optional: true
+
+tasks:
+  show:env:
+    desc: "显示环境变量"
+    cmds:
+      - |
+        echo "DEVELOPER: {{.DEVELOPER}}"
+        echo "TIME_NOW: {{.TIME_NOW}}"
+        echo "PATH_LOCAL: {{.PATH_LOCAL}}"
+        echo "PATH_BIN: {{.PATH_BIN}}"
+        echo "PATH_DATA: {{.PATH_DATA}}"
+        echo "PATH_ARCHIVE: {{.PATH_ARCHIVE}}"
+        echo "PATH_FULL: {{.PATH_FULL}}"
+
+        echo "GIT_TAG_LATEST: {{.GIT_TAG_LATEST}}"
+        echo "GIT_TAG_NEXT: {{.GIT_TAG_NEXT}}"
+        echo "GIT_COMMIT: {{.GIT_COMMIT}}"
+
+        echo "GO_MODE_NAME: {{.GO_MODE_NAME}}"
+        echo "GO_APP_PROJECT: {{.GO_APP_PROJECT}}"
+        echo "GO_APP_NAME: {{.GO_APP_NAME}}"
+        echo "GO_BUILD_LDFLAGS_SW: {{.GO_BUILD_LDFLAGS_SW}}"
+        echo "GO_BUILD_LDFLAGS_X: {{.GO_BUILD_LDFLAGS_X}}"
