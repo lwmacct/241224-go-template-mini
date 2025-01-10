@@ -3,7 +3,7 @@ module github.com/lwmacct/241224-go-template-mini
 go 1.23.4
 
 require (
-	github.com/lwmacct/241224-go-template-pkgs v0.0.1736422457
+	github.com/lwmacct/241224-go-template-pkgs v0.0.1736542860
 	github.com/spf13/cobra v1.8.1
 )
 
