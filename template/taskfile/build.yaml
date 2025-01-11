@@ -16,16 +16,11 @@ tasks:
 
   pre:
     desc: "创建tag, 打包源码"
-    vars:
-      PATH_PREFIX: "{{.PATH_ARCHIVE}}/{{.GIT_TAG_NEXT}}.tar.gz"
     cmds:
       - echo "创建tag, 打包源码"
       - |
         git add . && git commit -m "release {{.GIT_TAG_NEXT}}" || true
-        git tag -a {{.GIT_TAG_NEXT}} -m ""
-        cat /proc/sys/kernel/random/uuid > {{.PATH_PREFIX}}.salt
-        git archive --format=tar.gz HEAD | openssl enc -aes-256-cbc -salt -pbkdf2 -pass file:{{.PATH_PREFIX}}.salt -out {{.PATH_PREFIX}}.enc
-        # openssl enc -d -aes-256-cbc -salt -pbkdf2 -pass file:{{.PATH_PREFIX}}.salt -in .{{.PATH_PREFIX}}.enc -out {{.PATH_PREFIX}}
+        git tag -a {{.GIT_TAG_NEXT}} -m "release {{.GIT_TAG_NEXT}}"
 
   arch:x86_64:
     desc: Build the project for x86_64
