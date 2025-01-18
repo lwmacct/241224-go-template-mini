@@ -1,0 +1,24 @@
+version: "3"
+
+tasks:
+  show:env:
+    desc: "显示环境变量"
+    cmds:
+      - |
+        echo "DEVELOPER: {{.DEVELOPER}}"
+        echo "TIME_NOW: {{.TIME_NOW}}"
+        echo "PATH_LOCAL: {{.PATH_LOCAL}}"
+        echo "PATH_BIN: {{.PATH_BIN}}"
+        echo "PATH_DATA: {{.PATH_DATA}}"
+        echo "PATH_ARCHIVE: {{.PATH_ARCHIVE}}"
+        echo "PATH_FULL: {{.PATH_FULL}}"
+
+        echo "GIT_TAG_LATEST: {{.GIT_TAG_LATEST}}"
+        echo "GIT_TAG_NEXT: {{.GIT_TAG_NEXT}}"
+        echo "GIT_COMMIT: {{.GIT_COMMIT}}"
+
+        echo "GO_MODE_NAME: {{.GO_MODE_NAME}}"
+        echo "GO_APP_PROJECT: {{.GO_APP_PROJECT}}"
+        echo "GO_APP_NAME: {{.GO_APP_NAME}}"
+        echo "GO_BUILD_LDFLAGS_SW: {{.GO_BUILD_LDFLAGS_SW}}"
+        echo "GO_BUILD_LDFLAGS_X: {{.GO_BUILD_LDFLAGS_X}}"

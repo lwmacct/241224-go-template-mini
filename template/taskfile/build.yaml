@@ -15,9 +15,9 @@ tasks:
       - echo "Release the project"
 
   pre:
-    desc: "创建tag, 打包源码"
+    desc: "创建 tag, 打包源码"
     cmds:
-      - echo "创建tag, 打包源码"
+      - echo "创建 tag"
       - |
         git add . && git commit -m "release {{.GIT_TAG_NEXT}}" || true
         git tag -a {{.GIT_TAG_NEXT}} -m "release {{.GIT_TAG_NEXT}}"

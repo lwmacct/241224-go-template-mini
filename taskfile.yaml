@@ -1,6 +1,6 @@
 version: "3"
 dotenv:
-  [".env", "{{.HOME}}/.env", "template/taskfile/.env", ".local/taskfile/.env"]
+  [".env", "{{.HOME}}/.env", ".local/taskfile/.env", "template/taskfile/.env"]
 
 vars:
   DEVELOPER: "https://yuque.com/lwmacct"
@@ -12,7 +12,8 @@ vars:
   PATH_ARCHIVE: "{{.PATH_LOCAL}}/archive"
   PATH_INIT:
     sh: |
-      mkdir -p {{.PATH_BIN}} {{.PATH_DATA}} {{.PATH_ARCHIVE}}
+      mkdir -p {{.PATH_BIN}} {{.PATH_DATA}} {{.PATH_ARCHIVE}} {{.PATH_LOCAL}}/script
+      if [ ! -d ".local/taskfile" ]; then cp -af template/taskfile .local/taskfile; fi
   PATH_FULL:
     sh: pwd
   GO_MODE_NAME:
@@ -35,9 +36,7 @@ vars:
       echo {{.GIT_TAG_LATEST}} | awk -F. '{print $1"."$2"."$3+1}'
   GIT_COMMIT:
     sh: git log -n 1 --format=%h 2>/dev/null || echo "0000"
-  GO_BUILD_LDFLAGS_SW: >-
-    -s
-    -w
+  GO_BUILD_LDFLAGS_SW: -s -w
   GO_BUILD_LDFLAGS_X: >-
     -X '{{.GO_MODE_NAME}}/app/version.AppRawName={{.GO_APP_NAME}}'
     -X '{{.GO_MODE_NAME}}/app/version.AppProject={{.GO_APP_PROJECT}}'
@@ -50,32 +49,9 @@ vars:
 
 includes:
   build:
-    taskfile: template/taskfile/build.yaml
+    taskfile: .local/taskfile/build.yaml
     optional: true
 
   run:
-    taskfile: template/taskfile/run.yaml
+    taskfile: .local/taskfile/run.yaml
     optional: true
-
-tasks:
-  show:env:
-    desc: "显示环境变量"
-    cmds:
-      - |
-        echo "DEVELOPER: {{.DEVELOPER}}"
-        echo "TIME_NOW: {{.TIME_NOW}}"
-        echo "PATH_LOCAL: {{.PATH_LOCAL}}"
-        echo "PATH_BIN: {{.PATH_BIN}}"
-        echo "PATH_DATA: {{.PATH_DATA}}"
-        echo "PATH_ARCHIVE: {{.PATH_ARCHIVE}}"
-        echo "PATH_FULL: {{.PATH_FULL}}"
-
-        echo "GIT_TAG_LATEST: {{.GIT_TAG_LATEST}}"
-        echo "GIT_TAG_NEXT: {{.GIT_TAG_NEXT}}"
-        echo "GIT_COMMIT: {{.GIT_COMMIT}}"
-
-        echo "GO_MODE_NAME: {{.GO_MODE_NAME}}"
-        echo "GO_APP_PROJECT: {{.GO_APP_PROJECT}}"
-        echo "GO_APP_NAME: {{.GO_APP_NAME}}"
-        echo "GO_BUILD_LDFLAGS_SW: {{.GO_BUILD_LDFLAGS_SW}}"
-        echo "GO_BUILD_LDFLAGS_X: {{.GO_BUILD_LDFLAGS_X}}"

@@ -2,11 +2,13 @@ version: "3"
 
 tasks:
   build:bin:
+    silent: true
     desc: "构建二进制文件"
     cmds:
       - go build -ldflags "{{.GO_BUILD_LDFLAGS_X}}" -o {{.GO_APP_PATH}} .
 
   test:help:
+    silent: true
     deps:
       - task: build:bin
     cmds:
@@ -15,6 +17,7 @@ tasks:
         {{.GO_APP_PATH}} test --help
 
   test:run:
+    silent: true
     deps:
       - task: build:bin
     vars:
@@ -25,10 +28,15 @@ tasks:
         echo '{{.STDIN}}' | {{.GO_APP_PATH}} test run
 
   start:run:
+    silent: true
     deps:
       - task: build:bin
+    vars:
+      SUBCMD: "start run"
     cmds:
       - |
+        {{.GO_APP_PATH}} {{.SUBCMD}} --help | grep '\--'  | sed '1d' |  tr '-' '_' | tr '[:lower:]' '[:upper:]' | sed 's/__/ACF_/g'
+        {{.GO_APP_PATH}} {{.SUBCMD}} --help 
         export ACF_SHOW_TEST=1
-        env | grep ACF_
-        echo "Stdin" | {{.GO_APP_PATH}} start run
+        # env | grep ACF_ # 有敏感信息时请勿使用
+        echo "Stdin" | {{.GO_APP_PATH}} {{.SUBCMD}}

@@ -12,19 +12,19 @@ import (
 	"github.com/lwmacct/241224-go-template-pkgs/m_log"
 )
 
-var mc *m_cmd.Ts
+var cmd *m_cmd.Ts
 
 func main() {
-	mc = m_cmd.New(nil)
+	cmd = m_cmd.New(nil)
 
 	{
 		// 命令行参数
-		mc.AddCobra(version.Cmd().Cobra())
-		mc.AddCobra(start.Cmd().Cobra())
+		cmd.AddCobra(version.Cmd().Cobra())
+		cmd.AddCobra(start.Cmd().Cobra())
 
 		// 开发环境中的测试命令
 		if os.Getenv("ACF_SHOW_TEST") == "1" {
-			mc.AddCobra(test.Cmd().Cobra())
+			cmd.AddCobra(test.Cmd().Cobra())
 		}
 	}
 
@@ -43,7 +43,7 @@ func main() {
 		app.Log = m_log.NewTs(ml)
 	}
 
-	if err := mc.Execute(); err != nil {
+	if err := cmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
