@@ -1,6 +1,6 @@
 package app
 
-import "github.com/lwmacct/241224-go-template-pkgs/m_log"
+import "github.com/lwmacct/241224-go-template-pkgs/pkgs/m_log"
 
 type TsFlag struct {
 	Log   m_log.Config

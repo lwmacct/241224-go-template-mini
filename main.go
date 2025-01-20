@@ -8,8 +8,8 @@ import (
 	"github.com/lwmacct/241224-go-template-mini/app/start"
 	"github.com/lwmacct/241224-go-template-mini/app/test"
 	"github.com/lwmacct/241224-go-template-mini/app/version"
-	"github.com/lwmacct/241224-go-template-pkgs/m_cmd"
-	"github.com/lwmacct/241224-go-template-pkgs/m_log"
+	"github.com/lwmacct/241224-go-template-pkgs/pkgs/m_cmd"
+	"github.com/lwmacct/241224-go-template-pkgs/pkgs/m_log"
 )
 
 var cmd *m_cmd.Ts
