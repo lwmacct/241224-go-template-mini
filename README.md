@@ -1,24 +1,22 @@
-# Golang 项目的基础模板
 
-## 使用方式
-将项目克隆下来后, 全局替换项目名称为你的项目路径 
+# 使用 Taskfile 管理项目
 
-在 ```/app/flag.go``` 中直接定义命令行参数并绑定
-
----
-## 运行示例
-使用 Taskfile
-```
++ 运行项目
+```bash
 task run:start:run
 ```
+
++ 显示环境变量
+```bash
+task show:env
+```
+
++ 构建项目
+```bash
+task build
+```
 ---
-```
-╰─# .local/bin/go-template-mini version run
-AppRawName:   go-template-mini
-AppVersion:   v0.0.1
-Go Version:   go1.23.4
-Git Commit:   d8cd98f
-Build Time:   2024-12-24 20:06:49 CST
-AppProject:   241224-go-template-mini
-Developer :   https://yuque.com/lwmacct
-```
+
+# 模板项目使用方法
+- 将项目克隆后替换项目名称为你的项目路径
+- 在 ```/app/flag.go``` 中直接定义命令行参数并绑定

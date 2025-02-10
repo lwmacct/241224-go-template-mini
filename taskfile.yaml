@@ -4,6 +4,7 @@ dotenv:
 
 vars:
   DEVELOPER: "https://yuque.com/lwmacct"
+  NAMESPACE: "lwmacct"
   TIME_NOW:
     sh: TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S %Z'
   PATH_LOCAL: ".local"
@@ -54,4 +55,8 @@ includes:
 
   run:
     taskfile: .local/taskfile/run.yaml
+    optional: true
+
+  show:
+    taskfile: .local/taskfile/show.yaml
     optional: true

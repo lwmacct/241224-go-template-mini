@@ -1,12 +1,14 @@
 version: "3"
 
 tasks:
-  show:env:
+  env:
     desc: "显示环境变量"
     cmds:
       - |
         echo "DEVELOPER: {{.DEVELOPER}}"
+        echo "NAMESPACE: {{.NAMESPACE}}"
         echo "TIME_NOW: {{.TIME_NOW}}"
+
         echo "PATH_LOCAL: {{.PATH_LOCAL}}"
         echo "PATH_BIN: {{.PATH_BIN}}"
         echo "PATH_DATA: {{.PATH_DATA}}"
