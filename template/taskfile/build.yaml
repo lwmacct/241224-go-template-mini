@@ -53,7 +53,7 @@ tasks:
         ENTRYPOINT ["tini", "--"]
         CMD ["{{.GO_APP_NAME}}", "version", "run"]
 
-        LABEL org.opencontainers.image.source=https://github.com/{{.NAMESPACE}}/{{.GO_APP_PROJECT}}
+        LABEL org.opencontainers.image.source={{.GIT_SOURCE}}
         LABEL org.opencontainers.image.description="{{.GO_APP_NAME}}"
         LABEL org.opencontainers.image.licenses=MIT
         EOF

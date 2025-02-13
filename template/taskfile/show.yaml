@@ -24,3 +24,4 @@ tasks:
         echo "GO_APP_NAME: {{.GO_APP_NAME}}"
         echo "GO_BUILD_LDFLAGS_SW: {{.GO_BUILD_LDFLAGS_SW}}"
         echo "GO_BUILD_LDFLAGS_X: {{.GO_BUILD_LDFLAGS_X}}"
+        echo "GIT_SOURCE: {{.GIT_SOURCE}}"
