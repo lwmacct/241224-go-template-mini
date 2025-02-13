@@ -47,6 +47,9 @@ vars:
     -X '{{.GO_MODE_NAME}}/app/version.Developer={{.DEVELOPER}}'
     -X '{{.GO_MODE_NAME}}/app/version.Workspace={{.PATH_FULL}}'
   GO_BUILD_LDFLAGS: "{{.GO_BUILD_LDFLAGS_SW}} {{.GO_BUILD_LDFLAGS_X}}"
+  GIT_SOURCE:
+    sh: |
+      grep <.git/config 'git@github.com' -E | head -n1 | sed 's|.git$||; s|:|/|; s|git@|https://|' | awk '{print $NF}'
 
 includes:
   build:
